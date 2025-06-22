@@ -1,6 +1,10 @@
 import pkg from 'mongodb';
 const { MongoClient } = pkg;
-import config from '../config.js';
+// import config from '../config.js';
+const host = process.env.DB_HOST || 'localhost';
+const port = parseInt(process.env.DB_PORT) || 27017;
+const dbName = process.env.DB_DATABASE || 'files_manager';
+const url = `mongodb://${host}:${port}/${dbName}`;
 
 
 class DBClient {
@@ -8,13 +12,13 @@ class DBClient {
     this.client = null;
     this.db = null;
     this.isConnected = false;
-    MongoClient.connect(config.db.url, { useUnifiedTopology: true }, (err, client) => {
+    MongoClient.connect(url, { useUnifiedTopology: true }, (err, client) => {
       if (err) {
         console.error('MongoDB connection error:', err);
         return;
       }
       this.client = client;
-      this.db = client.db(config.db.name);
+      this.db = client.db(dbName);
       this.isConnected = true;
     });
   }
