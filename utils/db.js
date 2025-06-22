@@ -1,7 +1,7 @@
-import mongodb from 'mongodb';
+import pkg from 'mongodb';
+const { MongoClient } = pkg;
 import config from '../config.js';
 
-const { MongoClient } = mongodb;
 
 class DBClient {
   constructor() {
