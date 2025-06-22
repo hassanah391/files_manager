@@ -11,13 +11,19 @@ class DBClient {
     this.client = null;
     this.db = null;
     this.isConnected = false;
+    this.usersCollection = null;
+    this.filesCollection = null;
+    
     MongoClient.connect(url, { useUnifiedTopology: true }, (err, client) => {
       if (err) {
         console.error('MongoDB connection error:', err);
+        this.isConnected = false;
         return;
       }
       this.client = client;
       this.db = client.db(dbName);
+      this.usersCollection = this.db.collection('users');
+      this.filesCollection = this.db.collection('files');
       this.isConnected = true;
     });
   }
@@ -27,13 +33,13 @@ class DBClient {
   }
 
   async nbUsers() {
-    if (!this.isConnected || !this.db) return 0;
-    return this.db.collection('users').countDocuments();
+    if (!this.isConnected || !this.usersCollection) return 0;
+    return this.usersCollection.countDocuments();
   }
 
   async nbFiles() {
-    if (!this.isConnected || !this.db) return 0;
-    return this.db.collection('files').countDocuments();
+    if (!this.isConnected || !this.filesCollection) return 0;
+    return this.filesCollection.countDocuments();
   }
 
 }
