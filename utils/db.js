@@ -1,10 +1,9 @@
 import pkg from 'mongodb';
 const { MongoClient } = pkg;
-// import config from '../config.js';
 const host = process.env.DB_HOST || 'localhost';
 const port = parseInt(process.env.DB_PORT) || 27017;
 const dbName = process.env.DB_DATABASE || 'files_manager';
-const url = `mongodb://${host}:${port}/${dbName}`;
+const url = `mongodb://${host}:${port}`;
 
 
 class DBClient {
