@@ -8,12 +8,12 @@ const timeLog = (req, res, next) => {
 };
 router.use(timeLog)
 
-router.get('/status', (req, res) => {
-  res.send(getStatus());
+router.get('/status', async (req, res) => {
+  res.send(await getStatus());
 });
 
-router.get('/stats', (req, res) => {
-  res.send(getStats());
+router.get('/stats', async (req, res) => {
+  res.send(await getStats());
 });
 
 module.exports = {  router };

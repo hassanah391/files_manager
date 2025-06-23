@@ -1,6 +1,6 @@
 import redis from '../utils/redis';
 import db from '../utils/db'
-const getStatus = () => {
+const getStatus = async () => {
   let statusUtility = {
     'redis': false,
     'db': false
