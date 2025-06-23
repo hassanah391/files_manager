@@ -9,6 +9,9 @@ const { router } = require('./routes/index');
 const app = express(); // Create Express app instance
 const port = process.env.PORT || 5000; // Set port
 
+// Add middleware to parse JSON request bodies
+app.use(express.json());
+
 // Mount all API routes
 app.use('/', router);
 
