@@ -1,5 +1,4 @@
-import pkg from 'mongodb';
-const { MongoClient } = pkg;
+const { MongoClient } = require('mongodb');
 const host = process.env.DB_HOST || 'localhost';
 const port = parseInt(process.env.DB_PORT) || 27017;
 const dbName = process.env.DB_DATABASE || 'files_manager';
@@ -66,4 +65,4 @@ class DBClient {
 }
 
 const dbClient = new DBClient();
-export default dbClient;
+module.exports = dbClient;
