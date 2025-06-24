@@ -6,7 +6,8 @@
 const express = require('express');
 const router = express.Router();
 const { getStatus, getStats } = require('../controllers/AppController');
-const { postNew } = require('../controllers/UsersController');
+const { postNew, getMe } = require('../controllers/UsersController');
+const { getConnect, getDisconnect } = require('../controllers/AuthController');
 
 
 // Middleware to log the time of each request
@@ -38,5 +39,19 @@ router.post('/users/', async (req, res) => {
   return res.status(201).json(result);
 });
 
+
+router.get('/connect', async (req, res) => {
+  await getConnect(req, res);
+});
+
+
+router.get('/disconnect', async (req, res) => {
+  await getDisconnect(req, res);
+});
+
+
+router.get('/users/me', async (req, res) => {
+  await getMe(req, res);
+});
 
 module.exports = { router };
