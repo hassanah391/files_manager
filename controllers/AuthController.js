@@ -4,10 +4,10 @@
  * Uses Redis for token storage and userUtils for helper functions
  */
 
-import { v4 as uuidv4 } from 'uuid';
-import sha1 from 'sha1';
-import redisClient from '../utils/redis';
-import userUtils from '../utils/user';
+const { v4: uuidv4 } = require('uuid');
+const sha1 = require('sha1');
+const redisClient = require('../utils/redis');
+const userUtils = require('../utils/user');
 
 class AuthController {
   /**
@@ -117,4 +117,4 @@ class AuthController {
   }
 }
 
-export default AuthController;
+module.exports = AuthController;

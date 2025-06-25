@@ -4,11 +4,11 @@
  * Uses Bull queue for background job processing
  */
 
-import { ObjectId } from 'mongodb';
-import sha1 from 'sha1';
-import Queue from 'bull';
-import dbClient from '../utils/db';
-import userUtils from '../utils/user';
+const { ObjectId } = require('mongodb');
+const sha1 = require('sha1');
+const Queue = require('bull');
+const dbClient = require('../utils/db');
+const userUtils = require('../utils/user');
 
 // Initialize Bull queue for user-related background jobs
 const userQueue = new Queue('userQueue');
@@ -134,4 +134,4 @@ class UsersController {
   }
 }
 
-export default UsersController;
+module.exports = UsersController;
