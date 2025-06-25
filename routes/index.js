@@ -1,56 +1,81 @@
-/**
- * routes/index.js - Defines all API endpoints for the ALX Files Manager
- * 
- * Endpoints:
- * - GET /status: Returns Redis and DB status
- * - GET /stats: Returns user and file counts
- * - POST /users: Creates a new user
- * - GET /users/me: Gets current user profile
- * - GET /connect: Authenticates user and returns token
- * - GET /disconnect: Signs out user by invalidating token
- */
+import express from 'express';
+import AppController from '../controllers/AppController';
+import UsersController from '../controllers/UsersController';
+import AuthController from '../controllers/AuthController';
+import FilesController from '../controllers/FilesController';
 
-const express = require('express');
-const router = express.Router();
-const AppController = require('../controllers/AppController');
-const UsersController = require('../controllers/UsersController');
-const AuthController = require('../controllers/AuthController');
+function controllerRouting(app) {
+  const router = express.Router();
+  app.use('/', router);
 
-// Middleware to log the time of each request
-const timeLog = (req, res, next) => {
-  console.log('Time: ', new Date().toISOString());
-  next();
-};
-router.use(timeLog);
+  // App Controller
 
-// GET /status - Returns Redis and DB status
-router.get('/status', (req, res) => {
-  AppController.getStatus(req, res);
-});
+  // should return if Redis is alive and if the DB is alive
+  router.get('/status', (req, res) => {
+    AppController.getStatus(req, res);
+  });
 
-// GET /stats - Returns number of users and files in the database
-router.get('/stats', (req, res) => {
-  AppController.getStats(req, res);
-});
+  // should return the number of users and files in DB
+  router.get('/stats', (req, res) => {
+    AppController.getStats(req, res);
+  });
 
-// POST /users - Creates a new user
-router.post('/users', (req, res) => {
-  UsersController.postNew(req, res);
-});
+  // User Controller
 
-// GET /connect - Authenticates user and returns token
-router.get('/connect', (req, res) => {
-  AuthController.getConnect(req, res);
-});
+  // should create a new user in DB
+  router.post('/users', (req, res) => {
+    UsersController.postNew(req, res);
+  });
 
-// GET /disconnect - Signs out user by invalidating token
-router.get('/disconnect', (req, res) => {
-  AuthController.getDisconnect(req, res);
-});
+  // should retrieve the user base on the token used
+  router.get('/users/me', (req, res) => {
+    UsersController.getMe(req, res);
+  });
 
-// GET /users/me - Gets current user profile
-router.get('/users/me', (req, res) => {
-  UsersController.getMe(req, res);
-});
+  // Auth Controller
 
-module.exports = { router };
+  // should sign-in the user by generating a new authentication token
+  router.get('/connect', (req, res) => {
+    AuthController.getConnect(req, res);
+  });
+
+  // should sign-out the user based on the token
+  router.get('/disconnect', (req, res) => {
+    AuthController.getDisconnect(req, res);
+  });
+
+  // Files Controller
+
+  // should create a new file in DB and in disk
+  router.post('/files', (req, res) => {
+    FilesController.postUpload(req, res);
+  });
+
+  // should retrieve the file document based on the ID
+  router.get('/files/:id', (req, res) => {
+    FilesController.getShow(req, res);
+  });
+
+  // should retrieve all users file documents for a
+  // specific parentId and with pagination
+  router.get('/files', (req, res) => {
+    FilesController.getIndex(req, res);
+  });
+
+  // should set isPublic to true on the file document based on the ID
+  router.put('/files/:id/publish', (req, res) => {
+    FilesController.putPublish(req, res);
+  });
+
+  // should set isPublic to false on the file document based on the ID
+  router.put('/files/:id/unpublish', (req, res) => {
+    FilesController.putUnpublish(req, res);
+  });
+
+  // should return the content of the file document based on the ID
+  router.get('/files/:id/data', (req, res) => {
+    FilesController.getFile(req, res);
+  });
+}
+
+export default controllerRouting;
