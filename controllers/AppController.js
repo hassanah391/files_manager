@@ -1,24 +1,11 @@
-/**
- * AppController - Handles application-wide endpoints
- * Provides status and statistics endpoints for the ALX Files Manager API
- */
-
-const redisClient = require('../utils/redis');
-const dbClient = require('../utils/db');
+import redisClient from '../utils/redis';
+import dbClient from '../utils/db';
 
 class AppController {
   /**
-   * GET /status - Returns the status of Redis and MongoDB connections
-   * 
-   * @param {Object} request - Express request object
-   * @param {Object} response - Express response object
-   * @returns {Object} JSON response with redis and db connection status
-   * 
-   * Example response:
-   * {
-   *   "redis": true,
-   *   "db": true
-   * }
+   * should return if Redis is alive and if the DB is alive too
+   * by using the 2 utils created previously:
+   * { "redis": true, "db": true } with a status code 200
    */
   static getStatus(request, response) {
     const status = {
@@ -29,17 +16,9 @@ class AppController {
   }
 
   /**
-   * GET /stats - Returns the number of users and files in the database
-   * 
-   * @param {Object} request - Express request object
-   * @param {Object} response - Express response object
-   * @returns {Object} JSON response with user and file counts
-   * 
-   * Example response:
-   * {
-   *   "users": 5,
-   *   "files": 12
-   * }
+   * should return the number of users and files in DB:
+   * { "users": 12, "files": 1231 }
+   *  with a status code 200
    */
   static async getStats(request, response) {
     const stats = {
@@ -50,4 +29,4 @@ class AppController {
   }
 }
 
-module.exports = AppController;
+export default AppController;
