@@ -1,41 +1,53 @@
-// controllers/AppController.js
-// Controller for application-level endpoints for the ALX Files Manager API
-// - Provides status and statistics endpoints
-
-import redis from '../utils/redis'; // Redis utility for checking Redis status
-import db from '../utils/db'; // DB utility for checking MongoDB status and stats
-
 /**
- * Returns the status of Redis and the database.
- * @returns {Object} An object with keys 'redis' and 'db' indicating their status (true/false)
+ * AppController - Handles application-wide endpoints
+ * Provides status and statistics endpoints for the ALX Files Manager API
  */
-const getStatus = async () => {
-  let statusUtility = {
-    'redis': false,
-    'db': false
-  };
-  if (redis.isAlive()) {
-    statusUtility.redis = true;
+
+const redisClient = require('../utils/redis');
+const dbClient = require('../utils/db');
+
+class AppController {
+  /**
+   * GET /status - Returns the status of Redis and MongoDB connections
+   * 
+   * @param {Object} request - Express request object
+   * @param {Object} response - Express response object
+   * @returns {Object} JSON response with redis and db connection status
+   * 
+   * Example response:
+   * {
+   *   "redis": true,
+   *   "db": true
+   * }
+   */
+  static getStatus(request, response) {
+    const status = {
+      redis: redisClient.isAlive(),
+      db: dbClient.isAlive(),
+    };
+    response.status(200).send(status);
   }
-  if (db.isAlive()) {
-    statusUtility.db = true;
+
+  /**
+   * GET /stats - Returns the number of users and files in the database
+   * 
+   * @param {Object} request - Express request object
+   * @param {Object} response - Express response object
+   * @returns {Object} JSON response with user and file counts
+   * 
+   * Example response:
+   * {
+   *   "users": 5,
+   *   "files": 12
+   * }
+   */
+  static async getStats(request, response) {
+    const stats = {
+      users: await dbClient.nbUsers(),
+      files: await dbClient.nbFiles(),
+    };
+    response.status(200).send(stats);
   }
+}
 
-  return statusUtility;
-};
-
-/**
- * Returns statistics about the database.
- * @returns {Promise<Object>} An object with keys 'users' and 'files' containing their respective counts
- */
-const getStats = async () => {
-  const users = await db.nbUsers();
-  const files = await db.nbFiles();
-  return {'users': users, 'files': files};
-};
-
-// Export controller functions for use in routes
-module.exports = {
-  getStatus,
-  getStats
-};
+module.exports = AppController;
