@@ -25,7 +25,7 @@ Before running this project, make sure you have the following installed:
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd alx-files_manager
+   cd files_manager
    ```
 
 2. **Install dependencies**
@@ -229,7 +229,7 @@ curl -X GET http://localhost:5000/stats
 ## 🔧 Project Structure
 
 ```
-alx-files_manager/
+files_manager/
 ├── controllers/          # Route controllers
 │   ├── AppController.js  # System status and stats
 │   ├── AuthController.js # Authentication endpoints
