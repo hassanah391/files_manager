@@ -1,4 +1,4 @@
-# ALX Files Manager
+# Files Manager
 
 A simple file management API built with Node.js, Express, MongoDB, and Redis. This project provides endpoints for user authentication, file upload, and file management with proper authentication and authorization.
 
